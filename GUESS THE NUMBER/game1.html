@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    transition: background-color 0.5s ease;
+  }
+
+   #game {
+    margin-top: 100px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+  }
+
+  h1 {
+    color: #333;
+    margin-top: 0;
+  }
+
+  p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+
+  input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #2980b9;
+  }
+
+  #message {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+
+  #emoji {
+    font-size: 40px;
+    margin-top: 10px;
+  }
+
+  #details {
+    font-size: 14px;
+    color: #888;
+    margin-top: 20px;
+  }
+
+  #attempts-list {
+    font-size: 14px;
+    text-align: left;
+    color: #666;
+    margin-top: 20px;
+  }
+
+  .attempt {
+    margin-bottom: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+
+  .attempt.correct {
+    background-color: #e9f7ef;
+    color: #27ae60;
+  }
+
+  .attempt.higher {
+    background-color: #fbecec;
+    color: #e74c3c;
+  }
+
+  .attempt.lower {
+    background-color: #eaf1fb;
+    color: #3498db;
+  }
+</style>
+<title>Guess the Number Game</title>
+</head>
+<body>
+  <div id="game">
+    <h1>Guess the Number Game</h1>
+    <p>?? Try to guess the secret number between 1 and 100:</p>
+    <input type="number" id="userGuess" min="1" max="100">
+    <button onclick="checkGuess()">Submit Guess</button>
+    <p id="message"></p>
+    <p id="quote"></p>
+    <p id="emoji"></p>
+    <p id="details">Number of attempts: <span id="attempts">0</span></p>
+    <div id="attempts-list">
+      <p>Previous attempts:</p>
+      <ul id="attempts-ul"></ul>
+    </div>
+  </div>
+
+  <script>
+    const targetNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+
+    // Inspirational quotes for each attempt
+    const quotes = [
+      "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
+      "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+      "Believe you can and you're halfway there. - Theodore Roosevelt",
+      "The secret to getting ahead is getting started. - Mark Twain",
+      "Your time is limited, don't waste it living someone else's life. - Steve Jobs",
+      "Every strike brings me closer to the next home run. - Babe Ruth",
+    ];
+
+    function getRandomQuote() {
+      return quotes[Math.floor(Math.random() * quotes.length)];
+    }
+
+    function checkGuess() {
+      const userGuess = parseInt(document.getElementById("userGuess").value);
+      attempts++;
+
+      let feedback = "";
+      let feedbackClass = "";
+
+      if (userGuess === targetNumber) {
+        feedback = `?? Congratulations! You guessed the number ${targetNumber} in ${attempts} attempts.`;
+        feedbackClass = "correct";
+        document.getElementById("userGuess").disabled = true;
+        document.getElementById("userGuess").style.display = "none";
+        document.querySelector("button").style.display = "none";
+        document.getElementById("emoji").innerHTML = "??";
+      } else if (userGuess < targetNumber) {
+        feedback = "Try higher.";
+        feedbackClass = "higher";
+        document.getElementById("emoji").innerHTML = "??";
+      } else {
+        feedback = "Try lower.";
+        feedbackClass = "lower";
+        document.getElementById("emoji").innerHTML = "??";
+      }
+
+      document.getElementById("message").innerHTML = feedback;
+      document.getElementById("message").className = feedbackClass;
+
+      document.getElementById("quote").textContent = getRandomQuote();
+      document.getElementById("attempts").textContent = attempts;
+      updateAttemptsList(userGuess, feedbackClass);
+    }
+
+    function updateAttemptsList(guess, feedbackClass) {
+      const attemptsList = document.getElementById("attempts-ul");
+      const listItem = document.createElement("li");
+      listItem.textContent = `Attempt ${attempts}: ${guess}`;
+      listItem.className = `attempt ${feedbackClass}`;
+      attemptsList.appendChild(listItem);
+    }
+  </script>
+</body>
+</html>
