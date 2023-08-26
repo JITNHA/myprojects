@@ -142,20 +142,20 @@
       let feedbackClass = "";
 
       if (userGuess === targetNumber) {
-        feedback = `?? Congratulations! You guessed the number ${targetNumber} in ${attempts} attempts.`;
+        feedback = `🎉 Congratulations! You guessed the number ${targetNumber} in ${attempts} attempts.`;
         feedbackClass = "correct";
         document.getElementById("userGuess").disabled = true;
         document.getElementById("userGuess").style.display = "none";
         document.querySelector("button").style.display = "none";
-        document.getElementById("emoji").innerHTML = "??";
+        document.getElementById("emoji").innerHTML = "🎊";
       } else if (userGuess < targetNumber) {
         feedback = "Try higher.";
         feedbackClass = "higher";
-        document.getElementById("emoji").innerHTML = "??";
+        document.getElementById("emoji").innerHTML = "🔼";
       } else {
         feedback = "Try lower.";
         feedbackClass = "lower";
-        document.getElementById("emoji").innerHTML = "??";
+        document.getElementById("emoji").innerHTML = "🔽";
       }
 
       document.getElementById("message").innerHTML = feedback;
